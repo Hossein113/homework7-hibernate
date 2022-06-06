@@ -2,36 +2,26 @@ package maktab74.repositori;
 
 import maktab74.domain.SportShoe;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.sql.*;
 
 public class SportShoeRepository {
 
-    private Connection connection;
+    private EntityManager entityManager;
 
-    public SportShoeRepository(Connection connection) {
+    public SportShoeRepository(EntityManager em) {
 
-        this.connection = connection;
+        this.entityManager = em;
     }
 
     public SportShoe insertSportShoe(SportShoe sportShoe) throws SQLException {
 
-        String insertQuery = "insert into sportshoe_table ( name, price ,material, size,color,made_in ,stra_type ," +
-                "sport_type ,number ) values (?,?,?,?,?,?,?,?,?) ";
-        PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-        preparedStatement.setString(1, sportShoe.getName());
-        preparedStatement.setInt(2, sportShoe.getPrice());
-        preparedStatement.setString(3, sportShoe.getMaterial());
-        preparedStatement.setInt(4, sportShoe.getSize());
-        preparedStatement.setString(5, sportShoe.getColor());
-        preparedStatement.setString(6, sportShoe.getMadeIn());
-        preparedStatement.setString(7, sportShoe.getStraType());
-        preparedStatement.setString(8, sportShoe.getSportType());
-        preparedStatement.setInt(9, sportShoe.getNumber());
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.persist(sportShoe);
+        transaction.commit();
 
-
-        preparedStatement.executeUpdate();
-
-        sportShoe.setId(getMaxId());
         return sportShoe;
     }
 
