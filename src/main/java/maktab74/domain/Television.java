@@ -1,15 +1,43 @@
 package maktab74.domain;
 
+import javax.lang.model.element.Name;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = Television.TABLE_NAME)
 public class Television extends ElectricalAppliances {
 
+    public static final String TABLE_NAME = "television_table";
+    public static final String COLOR = "color";
+    public static final String INCH_SIZE = "inch_size";
+    public static final String VOLTAGE_IN = "voltage_in";
+    public static final String CHANNAL_NUMBER = "channal_number";
+    public static final String  SPEAKER_NUMBER = "speaker_number";
+    public static final String WEIGHT = "weight";
+    public static final String IMAGE_TYPE = "image_type";
 
+@Column(name =COLOR )
     private String color;
+
+    @Column(name = INCH_SIZE)
     private int inchSize;
+
+    @Column(name = VOLTAGE_IN)
     private String voltageIn;
+
+    @Column(name = CHANNAL_NUMBER )
     private int channalNumber;
+
+    @Column(name = SPEAKER_NUMBER )
     private int speakerNumber;
+
+    @Column(name = WEIGHT)
     private String weight;
-    private String ImageType;
+
+    @Column(name = IMAGE_TYPE )
+    private String imageType;
 
     public Television() {
     }
@@ -22,7 +50,7 @@ public class Television extends ElectricalAppliances {
         this.channalNumber = channalNumber;
         this.speakerNumber = speakerNumber;
         this.weight = weight;
-        ImageType = imageType;
+        imageType = imageType;
     }
 
     public Television(String name, String madeIn, int price, int number, String brand, String color, int inchSize, String voltageIn, int channalNumber, int speakerNumber, String weight, String imageType) {
@@ -33,7 +61,7 @@ public class Television extends ElectricalAppliances {
         this.channalNumber = channalNumber;
         this.speakerNumber = speakerNumber;
         this.weight = weight;
-        ImageType = imageType;
+        imageType = imageType;
     }
 
     public int getChannalNumber() {
@@ -87,11 +115,11 @@ public class Television extends ElectricalAppliances {
     }
 
     public String getImageType() {
-        return ImageType;
+        return imageType;
     }
 
     public void setImageType(String imageType) {
-        ImageType = imageType;
+        imageType = imageType;
     }
 
     @Override
@@ -100,7 +128,7 @@ public class Television extends ElectricalAppliances {
                 ", inchSize=" + inchSize +
                 ", voltageIn='" + voltageIn + '\'' +
                 ", weight='" + weight + '\'' +
-                ", ImageType='" + ImageType + '\'' +
+                ", ImageType='" + imageType + '\'' +
                 "} " + super.toString();
     }
 }
