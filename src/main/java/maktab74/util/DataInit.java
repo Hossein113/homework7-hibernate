@@ -1,6 +1,6 @@
 package maktab74.util;
 
-import  maktab74.domain.*;
+import maktab74.domain.*;
 import maktab74.repositori.*;
 
 import java.sql.SQLException;
