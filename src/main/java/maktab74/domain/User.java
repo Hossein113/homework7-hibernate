@@ -2,6 +2,7 @@ package maktab74.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 
 @Entity
@@ -13,30 +14,31 @@ public class User {
     public static final String FIRST_NAME = "inch_size";
     public static final String LAST_NAME = "voltage_in";
     public static final String USER_NAME = "channal_number";
-    public static final String  PASSWORD = "speaker_number";
+    public static final String PASSWORD = "speaker_number";
     public static final String PHONE_NUMBER = "weight";
     public static final String EMAIL_ADDRESS = "image_type";
 
 
-@Column(name = ID)
+    @Column(name = ID)
+    @GeneratedValue
     private int id;
 
     @Column(name = FIRST_NAME)
     private String firstName;
 
-    @Column(name = LAST_NAME )
+    @Column(name = LAST_NAME)
     private String lastName;
 
-    @Column(name = USER_NAME )
+    @Column(name = USER_NAME , unique = true)
     private String userName;
 
-    @Column(name = PASSWORD )
+    @Column(name = PASSWORD)
     private String password;
 
     @Column(name = PHONE_NUMBER)
     private String phoneNumber;
 
-    @Column(name = EMAIL_ADDRESS )
+    @Column(name = EMAIL_ADDRESS)
     private String emailAddress;
 
 
