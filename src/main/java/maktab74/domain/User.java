@@ -1,19 +1,44 @@
 package maktab74.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = User.TABLE_NAME)
 public class User {
 
+    public static final String TABLE_NAME = "user_table";
+    public static final String ID = "color";
+    public static final String FIRST_NAME = "inch_size";
+    public static final String LAST_NAME = "voltage_in";
+    public static final String USER_NAME = "channal_number";
+    public static final String  PASSWORD = "speaker_number";
+    public static final String PHONE_NUMBER = "weight";
+    public static final String EMAIL_ADDRESS = "image_type";
+
+
+@Column(name = ID)
     private int id;
 
+    @Column(name = FIRST_NAME)
     private String firstName;
 
+    @Column(name = LAST_NAME )
     private String lastName;
+
+    @Column(name = USER_NAME )
     private String userName;
+
+    @Column(name = PASSWORD )
     private String password;
 
-
+    @Column(name = PHONE_NUMBER)
     private String phoneNumber;
 
+    @Column(name = EMAIL_ADDRESS )
     private String emailAddress;
+
 
     private Address address;
 
