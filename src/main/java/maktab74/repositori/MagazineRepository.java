@@ -3,6 +3,7 @@ package maktab74.repositori;
 import maktab74.domain.Magazine;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.sql.*;
 
 public class MagazineRepository {
@@ -16,7 +17,12 @@ public class MagazineRepository {
 
     public Magazine insertMagazine(Magazine magazine) throws SQLException {
 
+        EntityTransaction transaction =
+                entityManager.getTransaction();
 
+        transaction.begin();
+        entityManager.persist(magazine);
+        transaction.commit();
         return magazine;
     }
 
