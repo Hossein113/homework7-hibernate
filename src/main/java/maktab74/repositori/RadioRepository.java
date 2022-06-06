@@ -2,18 +2,20 @@ package maktab74.repositori;
 
 import maktab74.domain.Radio;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.sql.*;
 
 public class RadioRepository {
 
-    private Connection connection;
+    private EntityManager entityManager;
 
     private Radio[] radioList;
 
 
-    public RadioRepository(Connection db) {
+    public RadioRepository(EntityManager em) {
 
-        this.connection = db;
+        this.entityManager = em;
     }
 
     public Radio[] getRadioList() {
@@ -26,24 +28,10 @@ public class RadioRepository {
 
     public Radio insertRadio(Radio radio) throws SQLException {
 
-        String insertQuery = "insert into radio_table (name , price , made_in , color , size , voltage_in ,channel_number," +
-                " speaker_number ,weight , brand,number) values (?,?,?,?,?,?,?,?,?,?,?) ";
-        PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-        preparedStatement.setString(1, radio.getName());
-        preparedStatement.setInt(2, radio.getPrice());
-        preparedStatement.setString(3, radio.getMadeIn());
-        preparedStatement.setString(4, radio.getColor());
-        preparedStatement.setString(5, radio.getSize());
-        preparedStatement.setString(6, radio.getVoltageIn());
-        preparedStatement.setInt(7, radio.getChannelNumber());
-        preparedStatement.setInt(8, radio.getSpeakerNumber());
-        preparedStatement.setString(9, radio.getWeight());
-        preparedStatement.setString(10, radio.getBrand());
-        preparedStatement.setInt(11, radio.getNumber());
-
-        preparedStatement.executeUpdate();
-
-        radio.setId(getMaxId());
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.persist(radio);
+        transaction.commit();
         return radio;
     }
 
