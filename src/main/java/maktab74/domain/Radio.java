@@ -1,21 +1,45 @@
 package maktab74.domain;
 
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = Radio.TABLE_NAME)
 public class Radio extends ElectricalAppliances {
 
+    public static final String TABLE_NAME = "radio_table";
+    public static final String COLOR = "color";
+    public static final String SIZE = "size";
+    public static final String VOLTAGE = "magazine_table";
+    public static final String CHANNEL_NUMBER = "channel_number";
+    public static final String SPEAKER_NUMBER = "speaker_number";
+    public static final String WEIGHT = "weight";
+
+@Column(name = COLOR)
     private String color;
 
+    @Column(name =SIZE)
     private String size;
 
+    @Column(name =VOLTAGE)
     private String voltageIn;
 
+    @Column(name = CHANNEL_NUMBER)
     private int channelNumber;
 
+    @Column(name = SPEAKER_NUMBER)
     private int speakerNumber;
 
+    @Column(name = WEIGHT)
     private String weight;
 
 
     public Radio() {
+
     }
 
     public Radio(int id, String name, String madeIn, int price, int number, String brand, String color, String size, String voltageIn, int channelNumber, int speakerNumber, String weight) {
