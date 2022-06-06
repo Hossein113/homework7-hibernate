@@ -7,6 +7,15 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ApplicationContext {
+
+    public HibernateUtil getHibernateUtil() {
+        return hibernateUtil;
+    }
+
+    private HibernateUtil hibernateUtil ;
+
+
+
     private DatabaseConnected databaseConnected;
     private DatabaseCreateTable databaseCreateTable;
     private RadioRepository radioRepository;
@@ -62,7 +71,7 @@ public class ApplicationContext {
 
     public BookRepository getBookRepository() {
         if (bookRepository == null) {
-            bookRepository = new BookRepository(databaseConnected.getConnection());
+            bookRepository = new BookRepository(HibernateUtil.getEmf().createEntityManager());
         }
         return bookRepository;
     }
@@ -108,7 +117,7 @@ public class ApplicationContext {
 
     public TelevisionRepository getTelevisionRepository() {
         if (televisionRepository == null)
-            this.televisionRepository = new TelevisionRepository(databaseConnected.getConnection());
+            this.televisionRepository = new TelevisionRepository(HibernateUtil.getEmf().createEntityManager());
         return televisionRepository;
     }
 
