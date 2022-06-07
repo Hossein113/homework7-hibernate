@@ -1,10 +1,14 @@
 package maktab74.repositori;
 
+
+
 import maktab74.domain.Magazine;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 import java.sql.*;
+import java.util.List;
 
 public class MagazineRepository {
 
@@ -17,8 +21,7 @@ public class MagazineRepository {
 
     public Magazine insertMagazine(Magazine magazine) throws SQLException {
 
-        EntityTransaction transaction =
-                entityManager.getTransaction();
+        EntityTransaction transaction = entityManager.getTransaction();
 
         transaction.begin();
         entityManager.persist(magazine);
@@ -27,82 +30,39 @@ public class MagazineRepository {
     }
 
     public int getMaxId() throws SQLException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select max(id) from magazine_table");
-        if (resultSet.next()) {
-            return resultSet.getInt(1);
-        }
-        return 0;
+        TypedQuery query = entityManager.createQuery("select max(m) from Magazine m ", Integer.class);
+
+        return query.getFirstResult();
     }
 
-    public Magazine[] getAllMagazine() throws SQLException {
-        int allPrint = countAllMagazine();
-
-
-        Magazine[] magazines = new Magazine[allPrint];
-        int count = 0;
-        String query = "select * from magazine_table";
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-
-            magazines[count] = new Magazine(
-
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(4),
-                    resultSet.getInt(3),
-                    resultSet.getInt(8),
-                    resultSet.getString(5),
-                    resultSet.getString(6),
-                    resultSet.getString(7)
-
-            );
-
-
-            count++;
-        }
-        return magazines;
+    public List<Magazine> getAllMagazine() throws SQLException {
+        TypedQuery<Magazine> query = entityManager.createQuery("select m from Magazine m", Magazine.class);
+        return query.getResultList();
     }
 
 
     public int countAllMagazine() throws SQLException {
-        String query = "select count(*) from magazine_table";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt(1);
-        }
-        return 0;
+        TypedQuery query = entityManager.createQuery("select count(m)from Magazine m", Integer.class);
+        int firstResult = query.getFirstResult();
+        return firstResult;
     }
 
     public Magazine getById(int magazineId) throws SQLException {
-        String quri = "select * from magazine_table where id =" + magazineId;
-        PreparedStatement preparedStatement = connection.prepareStatement(quri);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return new Magazine(
 
-
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(4),
-                    resultSet.getInt(3),
-                    resultSet.getInt(8),
-                    resultSet.getString(5),
-                    resultSet.getString(6),
-                    resultSet.getString(7)
-
-            );
-        }
-        return null;
+        return entityManager.find(Magazine.class, magazineId);
     }
+
 
     public void douwnProduct(int magazineId) throws SQLException {
-        String quri = " update magazine_table set number=number-1 where id = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(quri);
-        preparedStatement.setInt(1, magazineId);
-        preparedStatement.executeUpdate();
+
+        entityManager.getTransaction().begin();
+
+        Magazine magazine = entityManager.find(Magazine.class, magazineId);
+
+       magazine.setNumber(magazine.getNumber() - 1);
+
+        entityManager.persist(magazine);
+
+        entityManager.getTransaction().commit();
     }
 }
-
