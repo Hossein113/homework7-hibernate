@@ -1,9 +1,6 @@
 package maktab74.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = User.TABLE_NAME)
@@ -19,7 +16,7 @@ public class User {
     public static final String EMAIL_ADDRESS = "image_type";
 
 
-    @Column(name = ID)
+    @Id
     @GeneratedValue
     private int id;
 
@@ -29,7 +26,7 @@ public class User {
     @Column(name = LAST_NAME)
     private String lastName;
 
-    @Column(name = USER_NAME , unique = true)
+    @Column(name = USER_NAME, unique = true)
     private String userName;
 
     @Column(name = PASSWORD)
@@ -41,7 +38,7 @@ public class User {
     @Column(name = EMAIL_ADDRESS)
     private String emailAddress;
 
-
+    @OneToOne
     private Address address;
 
     public User() {
