@@ -3,26 +3,30 @@ package maktab74.repositori;
 
 import maktab74.domain.*;
 
-import java.sql.*;
+import javax.persistence.EntityManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CartRepository {
 
-    private Connection connection;
+
     private BookRepository bookRepository;
     private MagazineRepository magazineRepository;
     private SportShoeRepository sportShoeRepository;
     private OfficalshoeRepository officalshoeRepository;
     private RadioRepository radioRepository;
     private TelevisionRepository televisionRepository;
-
+    private EntityManager entityManager;
 
     public CartRepository(
-            Connection dataBase,
+            EntityManager em,
             BookRepository bookRepository, MagazineRepository magazineRepository,
             SportShoeRepository sportShoeRepository, OfficalshoeRepository officalshoeRepository,
             RadioRepository radioRepository, TelevisionRepository televisionRepository) {
-        this.connection = dataBase;
+        this.entityManager = em;
         this.bookRepository = bookRepository;
         this.magazineRepository = magazineRepository;
         this.sportShoeRepository = sportShoeRepository;
