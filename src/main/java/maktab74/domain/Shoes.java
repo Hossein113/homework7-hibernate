@@ -1,5 +1,8 @@
 package maktab74.domain;
 
+import javax.persistence.Entity;
+
+
 public abstract class Shoes extends Product {
 
     private int size;
