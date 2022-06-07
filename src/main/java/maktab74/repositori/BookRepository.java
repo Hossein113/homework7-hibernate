@@ -1,11 +1,13 @@
 package maktab74.repositori;
 
 import maktab74.domain.Book;
-import maktab74.util.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.sql.*;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.sql.SQLException;
+import java.util.List;
 
 public class BookRepository {
 
@@ -27,83 +29,48 @@ public class BookRepository {
     }
 
     public int getMaxId() throws SQLException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select max(id) from book_table");
-        if (resultSet.next()) {
-            return resultSet.getInt(1);
-        }
-        return 0;
+       TypedQuery query = entityManager.createQuery("select max(b) from Book b ", Integer.class);
+       //int queryMaxResults=query.getfirstResults();
+       //return queryMaxResults
+               return query.getFirstResult();
     }
 
-    public Book[] getAllBook() throws SQLException {
-        int allPrint = countAllBook();
-
-
-        Book[] books = new Book[allPrint];
-        int count = 0;
-        String query = "select * from book_table";
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-
-            books[count] = new Book(
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(4),
-                    resultSet.getInt(3),
-                    resultSet.getInt(10),
-                    resultSet.getString(5),
-                    resultSet.getInt(6),
-                    resultSet.getString(7),
-                    resultSet.getString(8),
-                    resultSet.getInt(9)
-
-            );
-
-
-            count++;
-        }
-        return books;
+    public List<Book> getAllBook() throws SQLException {
+        TypedQuery<Book> query = entityManager.createQuery("select b from Book b", Book.class);
+        return query.getResultList();
     }
 
 
     public int countAllBook() throws SQLException {
-        String query = "select count(*) from book_table";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt(1);
-        }
-        return 0;
+
+        TypedQuery query = entityManager.createQuery("select count(b)from Book b", Integer.class);
+        int firstResult = query.getFirstResult();
+        return firstResult;
     }
 
     public Book getById(int bookId) throws SQLException {
-        String quri = "select * from book_table where id =" + bookId;
-        PreparedStatement preparedStatement = connection.prepareStatement(quri);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return new Book(
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(4),
-                    resultSet.getInt(3),
-                    resultSet.getInt(10),
-                    resultSet.getString(5),
-                    resultSet.getInt(6),
-                    resultSet.getString(7),
-                    resultSet.getString(8),
-                    resultSet.getInt(9)
-            );
-
-        }
-        return null;
+         return entityManager.find(Book.class, bookId);
+       // TypedQuery query = entityManager.createQuery("select b from Book b where b.id =" + bookId, Book.class);
+        //Book book = (Book) query.getSingleResult();
+        //return book;
     }
 
     public void douwnProduct(int bookId) throws SQLException {
-        String quri = " update book_table set number=number-1 where id = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(quri);
-        preparedStatement.setInt(1, bookId);
-        preparedStatement.executeUpdate();
+
+        /*EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();*/
+
+        entityManager.getTransaction().begin();
+
+        Book book = entityManager.find(Book.class, bookId);
+
+        book.setNumber(book.getNumber() - 1);
+
+        entityManager.persist(book);
+
+        entityManager.getTransaction().commit();
+
+       // Query query = entityManager.createQuery("update Book set number=number-1 where id=" + bookId);
 
     }
 }
