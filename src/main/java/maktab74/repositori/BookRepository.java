@@ -29,11 +29,12 @@ public class BookRepository {
     }
 
     public int getMaxId() throws SQLException {
-       TypedQuery query = entityManager.createQuery("select max(b) from Book b ", Integer.class);
-       //int queryMaxResults=query.getfirstResults();
-       //return queryMaxResults
-               return query.getFirstResult();
+        TypedQuery query = entityManager.createQuery("select max(b) from Book b ", Integer.class);
+        //int queryMaxResults=query.getfirstResults();
+        //return queryMaxResults
+        return query.getFirstResult();
     }
+
 
     public List<Book> getAllBook() throws SQLException {
         TypedQuery<Book> query = entityManager.createQuery("select b from Book b", Book.class);
